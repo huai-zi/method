@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<style>
+    .fx-click{
+        display: none !important;
+        transition: all 1s;
+    }
+    .jiathis_style_32x32{
+        position: absolute;
+        bottom:30px;
+    }
+    .jiathis_style_32x32 a{
+        display: inline-block;
+    }
+    .fenxiang{
+        width: 159px;
+        height: 100px;
+        padding:30px;
+        border:1px solid #ccc;
+        border-radius: 5px;
+        position: relative;
+    }
+</style>
+<body>
+<!-- JiaThis Button BEGIN -->
+<div class="fenxiang">
+    <button id="btn-click">点击按钮</button>
+    <div class="jiathis_style_32x32 ">
+        <a class="jiathis_button_qzone"></a>
+        <a class="jiathis_button_tsina"></a>
+        <a class="jiathis_button_weixin"></a>
+        <a class="jiathis_button_cqq"></a>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+    var jiathis_config = {
+        url: "http://www.boyouwang.com",
+        summary: "",
+        title: "博游网 #博游网#",
+        shortUrl: false,
+        hideMore: false
+    }
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+
+<script src='https://cdn.bootcss.com/jquery/2.1.4/jquery.min.js'></script>
+<script>
+    $(function () {
+        $('#btn-click').on('click',function(){
+            $('.jiathis_style_32x32').toggleClass('fx-click')
+        })
+    })
+</script>
+
+</body>
+</html>

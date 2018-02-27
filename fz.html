@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>构造函数的封装</title>
+</head>
+
+<body>
+    <form action="http://www.ganji.com/pub/pub.php?cid=7&mcid=22&act=update&method=submit" name="form">
+        <!-- accept为筛选的格式 -->
+        <input type="file" multiple="multiple" accept="image/*" name="files" value="C:\fakepath\848666386736461709.jpg">
+        <img src="" alt="">
+        <input type="button" value="点我试试">
+    </form>
+</body>
+<script>
+var Person = (function() {
+    //静态私有属性方法
+    var home = "China";
+    var file = document.querySelector('input[type="file"]');
+    var img = document.querySelector('img');
+
+    file.onchange = function() {
+        /*创建图片的链接,使用的是将file获取到的值,里面有时间还有相应的绝对路径,使用创建元素路径的方式,将获取到的files为获取的值,依次进行创建
+        里面的创建方式*/
+        // img.src = window.URL.createObjectURL(this.files[0]);
+
+        /*使用fileReader方式创建图片的路径*/
+        if (window.FileReader) {
+            var fr = new FileReader();
+            fr.onloadend = function(e) {
+                img.src = e.target.result;
+                //打印的是处理过后的图片地址
+                console.log(this.result);
+            };
+            fr.readAsDataURL(this.files[0]);
+
+        }
+        // var length = this.files.length;
+        // for (var i = 0; i < length; i++) {
+        //      var asd = document.createElement('input');
+        //      asd.name = 'files';
+        //      asd.type = 'hidden';
+        //      asd.value = this.files[i].name;
+        //    this.parentElement.appendChild(asd);
+        // }
+
+    }
+
+
+    function sayHome(name) {
+        console.log(name + "'s home in " + home);
+    }
+    //构造函数
+    function _person(name, age) {
+        /*其实构造函数内部的this指向的就是实例函数内部,所以这里的this,实例函数同样可以调用到,实例函数实际上和构造函数不相同,只有实例函数在构造函数的基础上new出来才行*/
+        var _this = this;
+
+        //构造函数安全模式，避免创建时候丢掉new关键字,用来测试一个对象在其原型链中是否存在一个构造函数的 prototype 属性
+        if (_this instanceof _person) {
+            console.log(555)
+            /*终于知道这个安全模式的用意已经写法了,就是在创建的时候,这样写了,你返回的是这个函数,要是你在外面忘记写new关键字了,在判断的时候,动态的返回new关键字以及调用*/
+            //共有属性, 方法
+            _this.name = name;
+            _this.getHome = function() {
+                //内部访问私有属性，方法
+                sayHome(_this.name);
+            };
+            _this.test = sayHome; //用于测试
+            //构造器
+            _this.setAge = function(age) {
+                _this.age = age + 12;
+            }(age);
+        } else {
+            console.log(666)
+            return new _person(name, age);
+        }
+    }
+    //静态共有属性方法
+    _person.prototype = {
+        constructor: _person,
+        drink: "water",
+        sayWord: function() {
+            console.log("ys is a boy");
+        }
+    }
+    return _person;
+})();
+
+var p1 = new Person("ys", 12);
+p1.getHome(); //ys's home in China
+console.log(p1.age); //24     
+
+var p2 = Person("ys", 12); //相当于,这里忘记书写上new关键字,在我们的安全模式中,我们这里其实返回的是new _proson('ys',12)
+p2.getHome(); //ys's home in China
+console.log(777)
+console.log(p2.age); //24   
+console.log(p2.test == p1.test); //true, 证明静态私有变量共享性
+</script>
+
+</html>

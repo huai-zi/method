@@ -1,0 +1,59 @@
+/* 轮播图的css样式 */
+#banner {
+    position: relative;
+}
+
+#banner ul {
+    position: absolute;
+    list-style-type: none;
+    filter: Alpha(Opacity=80);
+    opacity: 0.8;
+    z-index: 1002;
+    bottom:-300px;
+    left: 24%;
+}
+
+#banner ul li {
+    margin: 0 3px;
+    float: left;
+    display: block;
+    color: #FFF;
+    background: #898989;
+    cursor: pointer;
+    border-radius: 5px;
+    width: 10px;
+    height: 10px;
+}
+
+#banner ul li.on {
+    background-color: #ded8d8;
+}
+
+#banner_list a {
+    width: 500px;
+    height: 300px;
+    background: url('http://phxportal.oss-cn-zhangjiakou.aliyuncs.com/imgs/banner/bgcimgs2.jpg') no-repeat center;
+    position: absolute;
+    background-size: cover;
+}
+
+/*一段动画效果,可以在最后一帧停止下来*/
+
+.banner_h {
+    animation: trans .5s;
+    /*动画停在最后一帧*/
+    animation-fill-mode: forwards;
+
+}
+
+@keyframes trans {
+    from{
+        transform: translatey(60px);
+        opacity: 0;
+    }
+    100%{
+        opacity: 1;
+        transform: translatey(0px);
+
+    }
+}

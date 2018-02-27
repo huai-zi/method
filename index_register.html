@@ -1,0 +1,237 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        /* basic stylings ------------------------------------------ */
+        .container {
+            font-family: 'Roboto';
+            width: 600px;
+            margin: 30px auto 0;
+            display: block;
+            background: #FFF;
+            padding: 10px 50px 50px;
+
+        }
+
+        .dis-inline {
+            margin: 0 auto;
+        }
+
+        .group {
+            position: relative;
+            margin-bottom: 45px;
+        }
+
+        input {
+            font-size: 18px;
+            padding: 10px 10px 10px 5px;
+            display: block;
+            width: 300px;
+            border: none;
+            border-bottom: 1px solid #757575;
+        }
+
+        input:focus {
+            outline: none;
+        }
+
+        /* LABEL ======================================= */
+        label {
+            color: #999;
+            font-size: 18px;
+            font-weight: normal;
+            position: absolute;
+            pointer-events: none;
+            left: 5px;
+            top: 10px;
+            transition: 0.2s ease all;
+            -moz-transition: 0.2s ease all;
+            -webkit-transition: 0.2s ease all;
+        }
+
+        /* active state */
+        input:focus ~ label, input:valid ~ label {
+            top: -20px;
+            font-size: 14px;
+            color: #5264AE;
+        }
+
+        /* BOTTOM BARS ================================= */
+        .bar {
+            position: relative;
+            display: block;
+            width: 300px;
+        }
+
+        .bar:before, .bar:after {
+            content: '';
+            height: 2px;
+            width: 0;
+            bottom: 1px;
+            position: absolute;
+            background: #5264AE;
+            transition: 0.2s ease all;
+            -moz-transition: 0.2s ease all;
+            -webkit-transition: 0.2s ease all;
+        }
+
+        .bar:before {
+            left: 50%;
+        }
+
+        .bar:after {
+            right: 50%;
+        }
+
+        /* active state */
+        input:focus ~ .bar:before, input:focus ~ .bar:after {
+            width: 50%;
+        }
+
+        /* HIGHLIGHTER ================================== */
+        .highlight {
+            position: absolute;
+            height: 60%;
+            width: 100px;
+            top: 25%;
+            left: 0;
+            pointer-events: none;
+            opacity: 0.5;
+        }
+
+        /* active state */
+        input:focus ~ .highlight {
+            -webkit-animation: inputHighlighter 0.3s ease;
+            -moz-animation: inputHighlighter 0.3s ease;
+            animation: inputHighlighter 0.3s ease;
+        }
+
+        /* ANIMATIONS ================ */
+        @-webkit-keyframes inputHighlighter {
+            from {
+                background: #5264AE;
+            }
+            to {
+                width: 0;
+                background: transparent;
+            }
+        }
+
+        @-moz-keyframes inputHighlighter {
+            from {
+                background: #5264AE;
+            }
+            to {
+                width: 0;
+                background: transparent;
+            }
+        }
+
+        @keyframes inputHighlighter {
+            from {
+                background: #5264AE;
+            }
+            to {
+                width: 0;
+                background: transparent;
+            }
+        }
+    </style>
+</head>
+<body>
+<form action='' method='POST' class="dis-inline">
+<!--验证用户名-->
+    <div class="group">
+        <input type="text" class="post-push" id="usname" name='usname' required>
+        <span class="highlight"></span>
+        <span class="bar"></span>
+        <label>Name</label>
+        <span class="post-push-1" style='color:#ee2222'>&nbsp;</span>
+    </div>
+<!--验证邮箱-->
+    <div class="group">
+        <input type="text" class="post-push1" id="email" name='email' required>
+        <span class="highlight"></span>
+        <span class="bar"></span>
+        <label>Email</label>
+        <span class="post-push1-1" style='color:#ee2222'></span>
+
+    </div>
+</form>
+
+</body>
+<script src="https://cdn.bootcss.com/jquery/3.1.0/jquery.js"></script>
+<script>
+    $(function () {
+//       ^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$
+        /*邮箱的正则表达式*/
+        var $regex = /^[a-zA-Z0-9_.-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/;
+        ;
+        /*用户名正则表达式*/
+        var $usname = /^[a-zA-Z][a-zA-Z]{5,25}$/;
+        var $patrn = /[` ~!@#$%^&*()_\-+=<>?:"{}|,.\/;'\\[\]·~！@#￥%……&*（）——\-+={}|《》？：“”【】、；‘’，。、]/;
+        /*书写邮箱的判断*/
+        $('.post-push1').on('blur', function () {
+            if ($('.post-push1').val() == '') {
+                $('.post-push1-1').html('')
+                return
+            } else if (!$regex.test($('.post-push1').val())) {
+                $('.post-push1-1').html('请输入您的正确邮箱')
+                return
+            } else {
+                $('.post-push1-1').html('')
+                return
+            }
+
+        })
+        /*用户名验证*/
+        $('.post-push').on('blur', function () {
+            if ($('.post-push').val() == '') {
+                $('.post-push-1').html('')
+                return
+            } else if ($patrn.test($('.post-push').val())) {
+                $('.post-push-1').html('该会员名包含了非法字符，请重新输入')
+                return
+            } else if (!$usname.test($('.post-push').val())) {
+                $('.post-push-1').html('会员名为5-25字符，需要包含字母或者汉字')
+                return
+            } else {
+                $('.post-push-1').html('&nbsp;')
+
+            }
+        })
+
+    })
+
+
+    /*表单提交函数*/
+    function jqajax() {
+        /*我们的获取到用户输入的数据,以json形式封装起来*/        var data = {userName: $("#username").val(), email: $("#email").val()};
+        var url = "后台书写url地址";
+        /*需要书写的url地址*/
+        $.ajax({
+            type: "POST",
+            url: url,
+            data: data,
+            beforeSend: function () {
+                /*数据处理在成功之前*/
+                $("#span_content").text("数据处理中...");
+            },
+            success: function (msg) {
+                /*成功后执行的函数,可以提交弹向其他页面*/
+                alert('提交数据成功')
+            }
+        });
+    }
+    
+</script>
+</html>
